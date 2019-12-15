@@ -40,13 +40,7 @@ class ViewController: UIViewController {
                         items: (1...4).map{ Item(number: $0) }),
                 Section(title: "section-2", itemGroup: HorizontalThreeItemGroup(),
                         items: (1...4).map{ Item(number: $0) }),
-                Section(title: "section-3", itemGroup: SingleItemGroup(),
-                        items: (1...4).map{ Item(number: $0) }),
-                Section(title: "section-4", itemGroup: HorizontalThreeItemGroup(),
-                        items: (1...4).map{ Item(number: $0) }),
-                Section(title: "section-5", itemGroup: SingleItemGroup(),
-                        items: (1...4).map{ Item(number: $0) }),
-                Section(title: "section-6", itemGroup: HorizontalThreeItemGroup(),
+                Section(title: "section-3", itemGroup: LeftOneRightTowItemGroup(),
                         items: (1...4).map{ Item(number: $0) })
     ]
 
@@ -115,7 +109,7 @@ extension ViewController {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TextCell.reuseIdentifier, for: indexPath) as? TextCell
             else { fatalError("Cannot create new cell") }
 
-            cell.backgroundColor = .systemBlue
+            cell.backgroundColor = .lightGray
             cell.layer.cornerRadius = 20
             cell.contentView.layer.borderColor = UIColor.black.cgColor
             cell.contentView.layer.borderWidth = 1

@@ -10,12 +10,18 @@ import UIKit
 
 struct SingleItemGroup: ItemGroup {
     func create() -> NSCollectionLayoutGroup {
-        let itemLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        let itemLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                    heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemLayoutSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 10.0, leading: 10.0, bottom: 10.0, trailing: 10.0)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 10.0,
+                                                     leading: 10.0,
+                                                     bottom: 10.0,
+                                                     trailing: 10.0)
         
-        let containerGroupLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.85 / 16 * 9))
-        let containerGroup = NSCollectionLayoutGroup.horizontal(layoutSize: containerGroupLayoutSize, subitems: [item])
+        let containerGroupLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                              heightDimension: .fractionalWidth(0.85 / 16 * 9))
+        let containerGroup = NSCollectionLayoutGroup.horizontal(layoutSize: containerGroupLayoutSize,
+                                                                subitems: [item])
 
         return containerGroup
     }

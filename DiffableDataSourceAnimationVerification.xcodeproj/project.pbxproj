@@ -20,6 +20,7 @@
 		A8CA187023A609D000536832 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CA186F23A609D000536832 /* TextCell.swift */; };
 		A8CA187223A609EA00536832 /* TitleSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CA187123A609EA00536832 /* TitleSupplementaryView.swift */; };
 		A8EE40AA23A6111100E369CF /* ItemGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EE40A923A6111100E369CF /* ItemGroup.swift */; };
+		A8EE40AC23A6136700E369CF /* LeftOneRightTwoItemGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EE40AB23A6136700E369CF /* LeftOneRightTwoItemGroup.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		A8CA186F23A609D000536832 /* TextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
 		A8CA187123A609EA00536832 /* TitleSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleSupplementaryView.swift; sourceTree = "<group>"; };
 		A8EE40A923A6111100E369CF /* ItemGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemGroup.swift; sourceTree = "<group>"; };
+		A8EE40AB23A6136700E369CF /* LeftOneRightTwoItemGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftOneRightTwoItemGroup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +156,7 @@
 				A8EE40A923A6111100E369CF /* ItemGroup.swift */,
 				A8CA186B23A609A100536832 /* SingleItemGroup.swift */,
 				A8CA186D23A609BC00536832 /* HorizontalThreeItemGroup.swift */,
+				A8EE40AB23A6136700E369CF /* LeftOneRightTwoItemGroup.swift */,
 			);
 			path = CollectionLayoutGroup;
 			sourceTree = "<group>";
@@ -305,6 +308,7 @@
 				A8CA183B23A6057E00536832 /* SceneDelegate.swift in Sources */,
 				A8CA187023A609D000536832 /* TextCell.swift in Sources */,
 				A8EE40AA23A6111100E369CF /* ItemGroup.swift in Sources */,
+				A8EE40AC23A6136700E369CF /* LeftOneRightTwoItemGroup.swift in Sources */,
 				A8CA186E23A609BC00536832 /* HorizontalThreeItemGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
