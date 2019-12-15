@@ -26,6 +26,7 @@ class ViewController: UIViewController {
 
     struct Item: Hashable {
         let number: Int
+        let color: UIColor
         let identifier = UUID()
         func hash(into hasher: inout Hasher) {
             hasher.combine(identifier)
@@ -35,14 +36,19 @@ class ViewController: UIViewController {
         }
     }
 
-    let data = [Section(title: "section-1",
-                        items: (1...3).map{ Item(number: $0) }),
-                Section(title: "section-2",
-                        items: (1...6).map{ Item(number: $0) }),
-                Section(title: "section-3",
-                        items: (1...6).map{ Item(number: $0) })
-    ]
+    enum Segment: Int {
+        case one
+        case three
+        case oneTwo
+    }
 
+    var sortedDatas: [Section] {
+        return [Section(title: "", items: datas)]
+    }
+
+    lazy var datas: [Item] = (1...18).map {
+        return Item(number: $0, color: createRandomColor())
+    }
 
     static let headerElementKind = "header-element-kind"
 
@@ -59,23 +65,30 @@ class ViewController: UIViewController {
     }
 
     @IBAction func selectedSegment(_ sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex {
-        case 0:
+        switch Segment(rawValue: sender.selectedSegmentIndex) {
+        case .one:
             itemGroup = SingleItemGroup()
 
-        case 1:
+        case .three:
             itemGroup = HorizontalThreeItemGroup()
 
-        case 2:
+        case .oneTwo:
             itemGroup = LeftOneRightTowItemGroup()
 
-        default:
+        case .none:
             itemGroup = SingleItemGroup()
         }
         let snapshot = dataSource.snapshot()
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 
+}
+
+extension ViewController {
+    func createRandomColor() -> UIColor {
+        let color: [UIColor] = [.lightGray, .systemBlue, .systemGreen]
+        return color.randomElement()!
+    }
 }
 
 extension ViewController {
@@ -124,7 +137,6 @@ extension ViewController {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TextCell.reuseIdentifier, for: indexPath) as? TextCell
             else { fatalError("Cannot create new cell") }
 
-            cell.backgroundColor = .lightGray
             cell.layer.cornerRadius = 20
             cell.contentView.layer.borderColor = UIColor.black.cgColor
             cell.contentView.layer.borderWidth = 1
@@ -132,6 +144,7 @@ extension ViewController {
             cell.label.textAlignment = .center
             cell.label.font = UIFont.preferredFont(forTextStyle: .title1)
 
+            cell.backgroundColor = item.color
             cell.label.text = item.number.description
             return cell
         }
@@ -143,13 +156,13 @@ extension ViewController {
                 withReuseIdentifier: TitleSupplementaryView.reuseIdentifier,
                 for: indexPath) as? TitleSupplementaryView else { fatalError("Cannot create new header") }
             let snapshot = self.dataSource.snapshot()
-            let section = snapshot.sectionIdentifier(containingItem: self.dataSource.itemIdentifier(for: indexPath) ?? Item(number: 1))
+            let section = snapshot.sectionIdentifier(containingItem: self.dataSource.itemIdentifier(for: indexPath) ?? Item(number: 1, color: .clear))
             header.label.text = section?.title
             return header
         }
 
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
-        data.forEach{
+        sortedDatas.forEach{
             snapshot.appendSections([$0])
             snapshot.appendItems($0.items, toSection: $0)
         }
