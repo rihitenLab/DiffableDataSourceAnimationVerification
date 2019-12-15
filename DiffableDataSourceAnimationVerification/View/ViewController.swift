@@ -11,15 +11,16 @@ import UIKit
 class ViewController: UIViewController {
 
     struct Section: Hashable {
+        let id: Int
         let title: String
         let items: [Item]
 
         func hash(into hasher: inout Hasher) {
-            hasher.combine(title)
+            hasher.combine(id)
         }
 
         static func == (lhs: Section, rhs: Section) -> Bool {
-            return lhs.title == rhs.title
+            return lhs.id == rhs.id
         }
     }
 
@@ -67,11 +68,11 @@ class ViewController: UIViewController {
     var sortedDatas: [Section] {
         switch sortType {
         case .number:
-            return [Section(title: "", items: datas.sorted { $0.number < $1.number })]
+            return [Section(id: 0, title: "", items: datas.sorted { $0.number < $1.number })]
 
         case .color:
-            return CellColor.allCases.compactMap{ color in
-                return Section(title: color.rawValue, items: datas.filter({ data in
+            return CellColor.allCases.enumerated().compactMap { (index, color) in
+                return Section(id: index, title: color.rawValue, items: datas.filter({ data in
                     return data.color == color
                 }))
             }
