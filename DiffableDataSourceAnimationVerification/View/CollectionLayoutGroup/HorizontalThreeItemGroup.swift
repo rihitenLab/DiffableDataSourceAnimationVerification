@@ -19,7 +19,7 @@ struct HorizontalThreeItemGroup: ItemGroup {
                                                      trailing: 10.0)
         
         let containerGroupLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                              heightDimension: .fractionalWidth(0.85 / 16 * 9))
+                                                              heightDimension: .fractionalWidth(1.0 / 16 * 9))
         let containerGroup = NSCollectionLayoutGroup.horizontal(layoutSize: containerGroupLayoutSize,
                                                                 subitem: item, count: 3)
 

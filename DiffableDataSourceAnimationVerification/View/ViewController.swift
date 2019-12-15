@@ -13,7 +13,6 @@ class ViewController: UIViewController {
     struct Section: Hashable {
         let identifier = UUID()
         let title: String
-        let itemGroup: ItemGroup
         let items: [Item]
 
         func hash(into hasher: inout Hasher) {
@@ -36,25 +35,45 @@ class ViewController: UIViewController {
         }
     }
 
-    let data = [Section(title: "section-1", itemGroup: SingleItemGroup(),
-                        items: (1...4).map{ Item(number: $0) }),
-                Section(title: "section-2", itemGroup: HorizontalThreeItemGroup(),
-                        items: (1...4).map{ Item(number: $0) }),
-                Section(title: "section-3", itemGroup: LeftOneRightTowItemGroup(),
-                        items: (1...4).map{ Item(number: $0) })
+    let data = [Section(title: "section-1",
+                        items: (1...3).map{ Item(number: $0) }),
+                Section(title: "section-2",
+                        items: (1...6).map{ Item(number: $0) }),
+                Section(title: "section-3",
+                        items: (1...6).map{ Item(number: $0) })
     ]
 
 
     static let headerElementKind = "header-element-kind"
 
+    @IBOutlet private weak var containerView: UIView!
     private var collectionView: UICollectionView! = nil
 
     private var dataSource: UICollectionViewDiffableDataSource<Section, Item>! = nil
+    private var itemGroup: ItemGroup = SingleItemGroup()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureHierarchy()
         configureDataSource()
+    }
+
+    @IBAction func selectedSegment(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            itemGroup = SingleItemGroup()
+
+        case 1:
+            itemGroup = HorizontalThreeItemGroup()
+
+        case 2:
+            itemGroup = LeftOneRightTowItemGroup()
+
+        default:
+            itemGroup = SingleItemGroup()
+        }
+        let snapshot = dataSource.snapshot()
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
 
 }
@@ -67,12 +86,8 @@ extension ViewController {
         
         let layout = UICollectionViewCompositionalLayout(sectionProvider: {
             (sectionIndex:Int, layoutEnvironment:NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            let snapshot = self.dataSource.snapshot()
-            let section = snapshot.sectionIdentifier(containingItem: self.dataSource.itemIdentifier(for: IndexPath(item: 0, section: sectionIndex)) ?? Item(number: 1))
-            
-            guard let itemGroup = section?.itemGroup else { fatalError("Cannot get Section") }
-            
-            let sectionLayout = NSCollectionLayoutSection(group: itemGroup.create())
+
+            let sectionLayout = NSCollectionLayoutSection(group: self.itemGroup.create())
             
             let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
@@ -89,7 +104,7 @@ extension ViewController {
     }
 
     func configureHierarchy() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
+        collectionView = UICollectionView(frame: containerView.bounds, collectionViewLayout: createLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = .systemBackground
         collectionView.register(TextCell.self, forCellWithReuseIdentifier: TextCell.reuseIdentifier)
@@ -97,7 +112,7 @@ extension ViewController {
             TitleSupplementaryView.self,
             forSupplementaryViewOfKind: ViewController.headerElementKind,
             withReuseIdentifier: TitleSupplementaryView.reuseIdentifier)
-        view.addSubview(collectionView)
+        containerView.addSubview(collectionView)
         collectionView.delegate = self
     }
 }
@@ -138,7 +153,7 @@ extension ViewController {
             snapshot.appendSections([$0])
             snapshot.appendItems($0.items, toSection: $0)
         }
-        dataSource.apply(snapshot, animatingDifferences: false)
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
 }
 
