@@ -141,14 +141,16 @@ extension ViewController {
             (sectionIndex:Int, layoutEnvironment:NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
 
             let sectionLayout = NSCollectionLayoutSection(group: self.itemGroup.create())
-            
-            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .estimated(0.2)),
-                                               elementKind: ViewController.headerElementKind,
-                                               alignment: .top)
-            
-            sectionLayout.boundarySupplementaryItems = [sectionHeader]
+
+            if self.sortType != .number {
+                let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                   heightDimension: .estimated(0.2)),
+                                                   elementKind: ViewController.headerElementKind,
+                                                   alignment: .top)
+                
+                sectionLayout.boundarySupplementaryItems = [sectionHeader]
+            }
             
             return sectionLayout
         }, configuration: config)
