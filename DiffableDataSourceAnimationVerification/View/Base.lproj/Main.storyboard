@@ -23,19 +23,32 @@
                                     <segment title="One:Two"/>
                                 </segments>
                                 <connections>
-                                    <action selector="selectedSegment:" destination="BYZ-38-t0r" eventType="valueChanged" id="qNh-GG-CK2"/>
+                                    <action selector="selectedLayoutSegment:" destination="BYZ-38-t0r" eventType="valueChanged" id="qNh-GG-CK2"/>
+                                </connections>
+                            </segmentedControl>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="HoM-eR-VqX">
+                                <rect key="frame" x="20" y="107" width="374" height="32"/>
+                                <segments>
+                                    <segment title="Number"/>
+                                    <segment title="Color"/>
+                                </segments>
+                                <connections>
+                                    <action selector="selectedSortSegment:" destination="BYZ-38-t0r" eventType="valueChanged" id="ZWh-to-GF7"/>
                                 </connections>
                             </segmentedControl>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0oF-gs-IwB">
-                                <rect key="frame" x="0.0" y="123" width="414" height="773"/>
+                                <rect key="frame" x="0.0" y="162" width="414" height="734"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="hU2-KD-iAj" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="1CD-qh-4bg"/>
+                            <constraint firstItem="HoM-eR-VqX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="31C-4G-GHC"/>
                             <constraint firstItem="hU2-KD-iAj" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="24" id="5Fe-X1-9UR"/>
-                            <constraint firstItem="0oF-gs-IwB" firstAttribute="top" secondItem="hU2-KD-iAj" secondAttribute="bottom" constant="24" id="Pwy-k9-eVl"/>
+                            <constraint firstItem="HoM-eR-VqX" firstAttribute="top" secondItem="hU2-KD-iAj" secondAttribute="bottom" constant="8" id="7hb-df-3q2"/>
+                            <constraint firstItem="0oF-gs-IwB" firstAttribute="top" secondItem="HoM-eR-VqX" secondAttribute="bottom" constant="24" id="Q2w-c1-BbV"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="HoM-eR-VqX" secondAttribute="trailing" constant="20" id="YTe-2t-2RL"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hU2-KD-iAj" secondAttribute="trailing" constant="20" id="dvW-y8-10h"/>
                             <constraint firstAttribute="bottom" secondItem="0oF-gs-IwB" secondAttribute="bottom" id="gWM-9B-E9l"/>
                             <constraint firstItem="0oF-gs-IwB" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="oaM-KK-xnJ"/>
@@ -49,7 +62,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="139" y="106"/>
+            <point key="canvasLocation" x="137.68115942028987" y="105.80357142857143"/>
         </scene>
     </scenes>
 </document>

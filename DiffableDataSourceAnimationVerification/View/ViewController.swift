@@ -11,43 +11,76 @@ import UIKit
 class ViewController: UIViewController {
 
     struct Section: Hashable {
-        let identifier = UUID()
         let title: String
         let items: [Item]
 
         func hash(into hasher: inout Hasher) {
-            hasher.combine(identifier)
+            hasher.combine(title)
         }
 
         static func == (lhs: Section, rhs: Section) -> Bool {
-            return lhs.identifier == rhs.identifier
+            return lhs.title == rhs.title
         }
     }
 
     struct Item: Hashable {
         let number: Int
-        let color: UIColor
-        let identifier = UUID()
+        let color: CellColor
         func hash(into hasher: inout Hasher) {
-            hasher.combine(identifier)
+            hasher.combine(number)
         }
         static func == (lhs: Item, rhs: Item) -> Bool {
-            return lhs.identifier == rhs.identifier
+            return lhs.number == rhs.number
         }
     }
 
-    enum Segment: Int {
+    enum SegmentType: Int {
         case one
         case three
         case oneTwo
     }
 
+    enum SortType: Int {
+        case number
+        case color
+    }
+
+    enum CellColor: String, CaseIterable {
+        case gray
+        case green
+        case blue
+
+        var uicolor: UIColor {
+            switch self {
+            case .gray:
+                return .systemGray
+
+            case .green:
+                return .systemGreen
+
+            case .blue:
+                return .systemBlue
+            }
+        }
+    }
+
     var sortedDatas: [Section] {
-        return [Section(title: "", items: datas)]
+        switch sortType {
+        case .number:
+            return [Section(title: "", items: datas.sorted { $0.number < $1.number })]
+
+        case .color:
+            return CellColor.allCases.compactMap{ color in
+                return Section(title: color.rawValue, items: datas.filter({ data in
+                    return data.color == color
+                }))
+            }
+        }
+        
     }
 
     lazy var datas: [Item] = (1...18).map {
-        return Item(number: $0, color: createRandomColor())
+        return Item(number: $0, color: CellColor.allCases.randomElement()!)
     }
 
     static let headerElementKind = "header-element-kind"
@@ -56,7 +89,9 @@ class ViewController: UIViewController {
     private var collectionView: UICollectionView! = nil
 
     private var dataSource: UICollectionViewDiffableDataSource<Section, Item>! = nil
+
     private var itemGroup: ItemGroup = SingleItemGroup()
+    private var sortType: SortType = .number
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,8 +99,8 @@ class ViewController: UIViewController {
         configureDataSource()
     }
 
-    @IBAction func selectedSegment(_ sender: UISegmentedControl) {
-        switch Segment(rawValue: sender.selectedSegmentIndex) {
+    @IBAction func selectedLayoutSegment(_ sender: UISegmentedControl) {
+        switch SegmentType(rawValue: sender.selectedSegmentIndex) {
         case .one:
             itemGroup = SingleItemGroup()
 
@@ -82,13 +117,17 @@ class ViewController: UIViewController {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 
-}
-
-extension ViewController {
-    func createRandomColor() -> UIColor {
-        let color: [UIColor] = [.lightGray, .systemBlue, .systemGreen]
-        return color.randomElement()!
+    @IBAction func selectedSortSegment(_ sender: UISegmentedControl) {
+        guard let sortType = SortType(rawValue: sender.selectedSegmentIndex) else { return }
+        self.sortType = sortType
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+        sortedDatas.forEach{
+            snapshot.appendSections([$0])
+            snapshot.appendItems($0.items, toSection: $0)
+        }
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
+
 }
 
 extension ViewController {
@@ -144,7 +183,7 @@ extension ViewController {
             cell.label.textAlignment = .center
             cell.label.font = UIFont.preferredFont(forTextStyle: .title1)
 
-            cell.backgroundColor = item.color
+            cell.backgroundColor = item.color.uicolor
             cell.label.text = item.number.description
             return cell
         }
@@ -156,7 +195,7 @@ extension ViewController {
                 withReuseIdentifier: TitleSupplementaryView.reuseIdentifier,
                 for: indexPath) as? TitleSupplementaryView else { fatalError("Cannot create new header") }
             let snapshot = self.dataSource.snapshot()
-            let section = snapshot.sectionIdentifier(containingItem: self.dataSource.itemIdentifier(for: indexPath) ?? Item(number: 1, color: .clear))
+            let section = snapshot.sectionIdentifier(containingItem: self.dataSource.itemIdentifier(for: indexPath) ?? Item(number: 1, color: .gray))
             header.label.text = section?.title
             return header
         }
